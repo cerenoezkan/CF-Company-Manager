@@ -38,7 +38,6 @@
 </cfif>
 
 <!-- ŞİRKET GÜNCELLEME -->
-
 <cfif form.is_submitted eq "2">
     <cfquery datasource="SitemDB">
         UPDATE dbo.COMPANY SET
@@ -63,7 +62,6 @@
         WHERE Symbol = <cfqueryparam value="#url.id#" cfsqltype="cf_sql_varchar">
     </cfquery>
 </cfif>
-
 
 <!-- ŞİRKET SİLME -->
 <cfif url.mod eq "sil_sirket" AND structKeyExists(url,"id")>
@@ -119,28 +117,22 @@
 
     </div>
 
-    
     <!-- ŞİRKET LİSTESİ -->
     <cfif url.mod eq "sirketler">
-
         <cfquery name="qSirketler" datasource="SitemDB">
             SELECT * FROM dbo.COMPANY ORDER BY SecurityName
         </cfquery>
 
         <div class="card">
-
             <div class="card-header header-flex">
                 <h3><i class="fas fa-list"></i> Tüm Şirket Listesi</h3>
-
                 <a href="?mod=yeni_sirket" class="btn-primary">
                     <i class="fas fa-plus"></i> Yeni Şirket Bilgisi Gir
                 </a>
             </div>
 
             <div class="table-responsive">
-
                 <table>
-
                     <thead>
                         <tr>
                             <th>Sembol</th>
@@ -155,12 +147,9 @@
                             <th>İşlem</th>
                         </tr>
                     </thead>
-
                     <tbody>
-
                         <cfoutput query="qSirketler">
                         <tr>
-
                             <td><span class="id-tag">#Symbol#</span></td>
                             <td><strong>#SecurityName#</strong></td>
                             <td>#GICS_Sector#</td>
@@ -171,169 +160,130 @@
                             <td>#CIK#</td>
                             <td>#Founded#</td>
 
-                            <!-- İşlem butonları -->
                             <td class="action-buttons">
-
                                 <a href="?mod=duzenle_sirket&id=#Symbol#" class="icon-btn edit">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
-
                                 <a href="?mod=sil_sirket&id=#Symbol#"
                                    onclick="return confirm('Silmek istediğine emin misin?')"
                                    class="icon-btn delete">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
-
                             </td>
-
                         </tr>
                         </cfoutput>
-
                     </tbody>
-
                 </table>
-
             </div>
         </div>
+    </cfif> <!-- ⭐ cfif kapanışı eklendi -->
 
+    <!-- Kullanıcılar modu -->
+    <cfif url.mod eq "kullanicilar">
+        <cfinclude template="modules/kullanicilar.cfm">
     </cfif>
-
+    <cfif url.mod eq "eslesenler">
+    <cfinclude template="modules/eslesenler.cfm">
+    </cfif>
     
     <!-- YENİ ŞİRKET FORMU -->
     <cfif url.mod eq "yeni_sirket">
-
         <div class="card small-card">
-
             <div class="card-header">
                 <h3><i class="fas fa-edit"></i> Yeni Şirket Kaydı</h3>
             </div>
-
             <div class="card-body">
-
                 <form method="post" class="grid-form">
-
                     <input type="hidden" name="is_submitted" value="1">
-
                     <div class="form-group">
                         <label>Sembol (Symbol)</label>
                         <input type="text" name="Symbol" required placeholder="Örn: AAPL">
                     </div>
-
                     <div class="form-group">
                         <label>Şirket Adı (Security Name)</label>
                         <input type="text" name="SecurityName" required placeholder="Örn: Apple Inc.">
                     </div>
-
                     <div class="form-group">
                         <label>GICS Sektörü</label>
                         <input type="text" name="GICS_Sector" placeholder="Örn: Information Technology">
                     </div>
-
                     <div class="form-group">
                         <label>GICS Alt Sektörü</label>
                         <input type="text" name="GICS_Sub_Industry" placeholder="Örn: Technology Hardware">
                     </div>
-
                     <div class="form-group">
                         <label>Merkez Konumu</label>
                         <input type="text" name="Headquarters_Location" placeholder="Örn: Cupertino, California">
                     </div>
-
                     <div class="form-group">
                         <label>CIK No</label>
                         <input type="text" name="CIK" placeholder="Örn: 320193">
                     </div>
-
                     <div class="form-group">
                         <label>Kuruluş Yılı</label>
                         <input type="text" name="Founded" placeholder="Örn: 1976">
                     </div>
-
                     <div class="form-group">
                         <label>Sorumlu Kullanıcı</label>
                         <input type="text" name="Sorumlu_Kullanici" placeholder="Örn: Ceren Özkan">
                     </div>
-
                     <div class="form-actions">
                         <button type="submit" class="btn-success">Kaydet</button>
                         <a href="?mod=sirketler" class="btn-cancel">İptal</a>
                     </div>
-
                 </form>
-
             </div>
         </div>
-
     </cfif>
 
-    
     <!-- ŞİRKET DÜZENLEME FORMU -->
-<cfif url.mod eq "duzenle_sirket">
-
-    <div class="card small-card">
-
-        <div class="card-header">
-            <h3><i class="fas fa-edit"></i> Düzenle</h3>
+    <cfif url.mod eq "duzenle_sirket">
+        <div class="card small-card">
+            <div class="card-header">
+                <h3><i class="fas fa-edit"></i> Düzenle</h3>
+            </div>
+            <div class="card-body">
+                <cfoutput query="qSirket">
+                <form method="post" class="grid-form">
+                    <input type="hidden" name="is_submitted" value="2">
+                    <input type="hidden" name="Symbol" value="#Symbol#">
+                    <div class="form-group">
+                        <label>Şirket Adı</label>
+                        <input type="text" name="SecurityName" value="#SecurityName#">
+                    </div>
+                    <div class="form-group">
+                        <label>GICS Sektör</label>
+                        <input type="text" name="GICS_Sector" value="#GICS_Sector#">
+                    </div>
+                    <div class="form-group">
+                        <label>Alt Sektör</label>
+                        <input type="text" name="GICS_Sub_Industry" value="#GICS_Sub_Industry#">
+                    </div>
+                    <div class="form-group">
+                        <label>Merkez</label>
+                        <input type="text" name="Headquarters_Location" value="#Headquarters_Location#">
+                    </div>
+                    <div class="form-group">
+                        <label>CIK</label>
+                        <input type="text" name="CIK" value="#CIK#">
+                    </div>
+                    <div class="form-group">
+                        <label>Kuruluş</label>
+                        <input type="text" name="Founded" value="#Founded#">
+                    </div>
+                    <div class="form-group">
+                        <label>Sorumlu</label>
+                        <input type="text" name="Sorumlu_Kullanici" value="#Sorumlu_Kullanici#">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-success">Güncelle</button>
+                        <a href="?mod=sirketler" class="btn-cancel">İptal</a>
+                    </div>
+                </form>
+                </cfoutput>
+            </div>
         </div>
-
-        <div class="card-body">
-
-            <cfoutput query="qSirket">
-
-            <form method="post" class="grid-form">
-
-                <input type="hidden" name="is_submitted" value="2">
-                <input type="hidden" name="Symbol" value="#Symbol#">
-
-                <div class="form-group">
-                    <label>Şirket Adı</label>
-                    <input type="text" name="SecurityName" value="#SecurityName#">
-                </div>
-
-                <div class="form-group">
-                    <label>GICS Sektör</label>
-                    <input type="text" name="GICS_Sector" value="#GICS_Sector#">
-                </div>
-
-                <div class="form-group">
-                    <label>Alt Sektör</label>
-                    <input type="text" name="GICS_Sub_Industry" value="#GICS_Sub_Industry#">
-                </div>
-
-                <div class="form-group">
-                    <label>Merkez</label>
-                    <input type="text" name="Headquarters_Location" value="#Headquarters_Location#">
-                </div>
-
-                <div class="form-group">
-                    <label>CIK</label>
-                    <input type="text" name="CIK" value="#CIK#">
-                </div>
-
-                <div class="form-group">
-                    <label>Kuruluş</label>
-                    <input type="text" name="Founded" value="#Founded#">
-                </div>
-
-                <div class="form-group">
-                    <label>Sorumlu</label>
-                    <input type="text" name="Sorumlu_Kullanici" value="#Sorumlu_Kullanici#">
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn-success">Güncelle</button>
-                    <a href="?mod=sirketler" class="btn-cancel">İptal</a>
-                </div>
-                
-            </form>
-
-            </cfoutput>
-
-        </div>
-    </div>
-
-</cfif>
-
+    </cfif>
 
 </div>
 
