@@ -1,4 +1,5 @@
 <cfif structKeyExists(form, "is_submitted") AND form.is_submitted eq "kullanici_ekle">
+    <!-- Eğer kullanıcı sayfayı sadece görüntülemek için açmamışsa ve eğer bu değişkenin değeri tam olarak kullanici_ekle ise içeri gir.-->
     <cfquery datasource="SitemDB">
         INSERT INTO dbo.Kullanicilar (Firstname, Lastname, Email, Role, CreatedDate)
         VALUES (
@@ -47,7 +48,7 @@
         <div class="card">
             <div class="card-header header-flex">
                 <h3><i class="fas fa-list"></i> Kullanıcı Listesi</h3>
-                <a href="?mod=yeni_kullanici" class="btn-primary"><i class="fas fa-plus"></i> Yeni Kullanıcı</a>
+                <a href="?mod=yeni_kullanici" class="btn-primary"><i class="fas fa-plus"></i> Yeni Kullanıcı Ekle</a>
             </div>
             <div class="table-responsive">
                 <table>
@@ -73,7 +74,7 @@
                             <td>#DateFormat(CreatedDate, "dd.mm.yyyy")#</td>
                             <td class="action-buttons">
                                 <a href="?mod=duzenle_kullanici&id=#ID#" class="icon-btn edit"><i class="fas fa-pen"></i></a>
-                                <a href="?mod=sil_kullanici&id=#ID#" class="icon-btn delete" onclick="return confirm('Emin misin?')"><i class="fas fa-trash"></i></a>
+                                <a href="?mod=sil_kullanici&id=#ID#" class="icon-btn delete" onclick="return confirm('Silmek istediğinizden emin misiniz?')"><i class="fas fa-trash"></i></a>
                             </td>
                         </tr>
                         </cfoutput>

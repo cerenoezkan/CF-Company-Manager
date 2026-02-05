@@ -9,6 +9,8 @@
 
 <!-- YENİ ŞİRKET EKLEME -->
 <cfif form.is_submitted eq "1">
+    <!--Eğer bu değer 1 ise kullanıcı butona basmıştır, o zaman veritabanına kaydet. 
+        Eğer 1 değilse (sayfa sadece görüntüleniyorsa) hiçbir şey yapma.-->
     <cfquery datasource="SitemDB">
         INSERT INTO dbo.COMPANY (
             Symbol,
@@ -58,6 +60,7 @@
 <!-- DÜZENLEME İÇİN TEK KAYIT ÇEK -->
 <cfif url.mod eq "duzenle_sirket" AND structKeyExists(url,"id")>
     <cfquery name="qSirket" datasource="SitemDB">
+    <!-- name="qSirket": Bu sorgunun sonucuna bir isim veriyoruz -->
         SELECT * FROM dbo.COMPANY
         WHERE Symbol = <cfqueryparam value="#url.id#" cfsqltype="cf_sql_varchar">
     </cfquery>
@@ -78,7 +81,6 @@
 <html lang="tr">
 <head>
     <meta charset="utf-8">
-    <title>Sistem Yönetim Paneli</title>
 
     <!-- Icon kütüphaneleri -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -150,6 +152,7 @@
                     <tbody>
                         <cfoutput query="qSirketler">
                         <tr>
+                            <!-- sorgular içindeki alanlara erişim sağlar -->
                             <td><span class="id-tag">#Symbol#</span></td>
                             <td><strong>#SecurityName#</strong></td>
                             <td>#GICS_Sector#</td>
@@ -176,9 +179,12 @@
                 </table>
             </div>
         </div>
-    </cfif> <!-- ⭐ cfif kapanışı eklendi -->
+    </cfif> 
 
     <!-- Kullanıcılar modu -->
+    <!-- "Yeni Kullanıcı Ekle" butonuna bastığında URL mod=yeni_kullanici oluyordu. 
+        ColdFusion bakıyordu; yeni_kullanici, kullanicilar kelimesine eşit değil! 
+        O yüzden dosyayı yüklemeyi bırakıyordu. Sen de ekranda hiçbir şey göremiyordun.-->
     <cfif url.mod eq "kullanicilar" 
           OR url.mod eq "yeni_kullanici" 
           OR url.mod eq "duzenle_kullanici" 
