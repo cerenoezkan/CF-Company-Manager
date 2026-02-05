@@ -117,6 +117,11 @@
             <strong>Eşleşenler</strong>
         </a>
 
+        <a href="?mod=yorumlar" class="filter-card <cfif url.mod eq 'eslesenler'>active</cfif>">
+            <i class="fas fa-handshake fa-2x"></i>
+            <strong>Şirket Yorumları & Analiz</strong>
+        </a>
+
     </div>
 
     <!-- ŞİRKET LİSTESİ -->
@@ -194,6 +199,10 @@
     
     <cfif url.mod eq "eslesenler">
         <cfinclude template="modules/eslesenler.cfm">
+    </cfif>
+    
+    <cfif url.mod eq "yorumlar">
+        <cfinclude template="modules/yorumlar.cfm">
     </cfif>
     
     <!-- YENİ ŞİRKET FORMU -->
