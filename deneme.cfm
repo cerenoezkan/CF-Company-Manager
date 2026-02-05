@@ -179,11 +179,15 @@
     </cfif> <!-- ⭐ cfif kapanışı eklendi -->
 
     <!-- Kullanıcılar modu -->
-    <cfif url.mod eq "kullanicilar">
+    <cfif url.mod eq "kullanicilar" 
+          OR url.mod eq "yeni_kullanici" 
+          OR url.mod eq "duzenle_kullanici" 
+          OR url.mod eq "sil_kullanici">
         <cfinclude template="modules/kullanicilar.cfm">
     </cfif>
+    
     <cfif url.mod eq "eslesenler">
-    <cfinclude template="modules/eslesenler.cfm">
+        <cfinclude template="modules/eslesenler.cfm">
     </cfif>
     
     <!-- YENİ ŞİRKET FORMU -->
