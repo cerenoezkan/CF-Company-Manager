@@ -66,7 +66,7 @@ Includes:
 3. Create SQL Server database
 4. Run SQL scripts
 5. Configure ColdFusion datasource
-6. Run:http://localhost/.../deneme.cfm
+6. Run:[http://localhost/.../deneme.cfm](http://127.0.0.1:8500/deneme.cfm?mod=sirketler)
 
 
 ---
